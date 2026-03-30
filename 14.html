@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>浪谷细雨·养成系蜜梨 溯源系统</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif
+    }
+
+    body {
+      background: #fcfbf5;
+      color: #333
+    }
+
+    /* 欢迎页 */
+    .welcome {
+
+      width: 100%;
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      position: relative;
+      padding: 20px;
+    }
+
+    .welcome::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("/assets/10.jpg");
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.7);
+      z-index: -1;
+    }
+
+    .welcome h1 {
+      font-size: 24px;
+      color: #5a7340;
+      text-align: center;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .welcome .code {
+      position: absolute;
+      bottom: 20px;
+      right: 25px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* 入口网格 */
+    .container {
+      padding: 100px 20px 100px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 15px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .card .icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .card p {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* 弹窗样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      color: #5a7340;
+      margin-bottom: 15px;
+      border-left: 4px solid #94b866;
+      padding-left: 10px;
+    }
+
+    .modal p {
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .modal-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    /* 底部按钮 */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      padding: 12px;
+      gap: 10px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .footer button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn1 {
+      background: #94b866;
+      color: white;
+    }
+
+    .btn2 {
+      background: #f9b354;
+      color: white;
+    }
+
+    .btn3 {
+      background: #5a7340;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 欢迎页 -->
+  <div class="welcome">
+    <div style="background-image: url('/assets/10.jpg'); background-size: cover; background-position: center;">
+      <!-- 这里可以添加与照片组相关的其他内容 -->
+    </div>
+    <h1 style="color: white;">欢迎品尝<br></br>浪谷细围·养成系蜜梨</h1>
+    <div class="code">专属编号: LY-2025-0866</div>
+  </div>
+  <!-- 四个入口卡片 -->
+  <div class="container">
+    <div class="card-grid">
+      <div class="card" onclick="openModal('growth')">
+        <div class="icon">🍐</div>
+        <h3>成长档案</h3>
+        <p>查看生长全过程</p>
+      </div>
+      <div class="card" onclick="openModal('farmer')">
+        <div class="icon">👨‍🌾</div>
+        <h3>果农寄语</h3>
+        <p onclick="showVideo()">听听果农的心里话</p>
+      </div>
+      <div class="card" onclick="openModal('green')">
+        <div class="icon">🌱</div>
+        <h3>绿色承诺</h3>
+        <p>坚守生态种植</p>
+      </div>
+      <div class="card" onclick="openModal('recipe')">
+        <div class="icon">🍯</div>
+        <h3>专属食谱</h3>
+        <p>解锁美味吃法</p>
+      </div>
+    </div>
+  </div>
+  <!-- 底部按钮 -->
+  <div class="footer">
+    <button class="btn1">认养一棵树</button>
+    <button class="btn2">分享梨故事</button>
+    <button class="btn3">加入社群</button>
+  </div>
+  <!-- 弹窗1：成长档案 -->
+  <div class="modal" id="growth">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('growth')">&times;</span>
+      <h2>🍐 成长档案</h2>
+      <img src="/assets/11.jpg" class="modal-img" alt="树上的蜜梨">
+      <p>• 花芽期：2025年3月</p>
+      <p>• 膨果期：2025年6月</p>
+      <p>• 成熟期：2025年8月</p>
+      <p>• 日照：1680小时 | 降雨量：1260mm</p>
+    </div>
+  </div>
+  <!-- 弹窗2：果农寄语 -->
+  <div class="modal" id="farmer">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('farmer')"></span>
+      <h2>果农寄语</h2>
+      <style>
+        #big-img {
+          width: 100%;
+        }
+
+        .side-by-side {
+          width: 50%;
+          float: left;
+        }
+      </style>
+      <img id="big-img" src="/assets/15.jpg" alt="寄语">
+      <img class="side-by-side" src="/assets/16.jpg" alt="果农相关">
+      <video class="side-by-side" src="/assets/14.mp4" controls></video>
+      <p><strong>果农：李大叔</strong></p>
+      <p>用心种好每一颗梨，阳光、土壤、水分都刚刚好。</p>
+      <p>点击播放语音寄语</p>
+    </div>
+  </div>
+  <!-- 弹窗3：绿色承诺 -->
+  <div class="modal" id="green">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('green')">&times;</span>
+      <h2>🌱 绿色承诺</h2>
+      <p style="font-style:italic; color:#5a7340;">种下一棵树，许下对春天的绿色承诺。</p>
+      <p>✅ 人工除草，拒绝除草剂</p>
+      <p>✅ 有机肥种植，无化学催熟</p>
+      <p>✅ 无农残、无膨大剂、无催熟剂</p>
+      <p>《绿色种植承诺书》已公示</p>
+    </div>
+  </div>
+  <!-- 弹窗4：专属食谱 -->
+  <div class="modal" id="recipe">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('recipe')">&times;</span>
+      <h2>🍯 专属食谱</h2>
+      <img src="/assets/12.jpg" class="modal-img" alt="冰糖雪梨">
+      <p><strong>冰糖雪梨</strong></p>
+      <p>1. 雪梨洗净去核</p>
+      <p>2. 放入冰糖、枸杞</p>
+      <p>3. 隔水蒸20分钟即可</p>
+      <p>✨ 润肺止咳、清甜润喉</p>
+    </div>
+  </div>
+  <script>
+    // 打开弹窗
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    // 关闭弹窗
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    // 点击空白处关闭弹窗
+    window.onclick = function (event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+  </script>
+  </script>
+</body>
+
+</html>
